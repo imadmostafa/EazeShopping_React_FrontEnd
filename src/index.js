@@ -3,11 +3,15 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import Webcamtrial1 from './Webcamtrial1';
+import LandingMain from './SmartGroceryProject/LandingPage/LandingMain';
+import Start_Router from './SmartGroceryProject/LandingPage/Router/MainRouter';
+import BeforeRouter from './SmartGroceryProject/LandingPage/Router/BeforeRouter';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  
+   <BeforeRouter/>
+   ,
   document.getElementById('root')
 );
 
