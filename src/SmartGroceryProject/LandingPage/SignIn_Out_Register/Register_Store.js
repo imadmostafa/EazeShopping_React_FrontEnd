@@ -6,18 +6,18 @@ import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
-import {Link as RouterLink} from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import  {useState} from 'react';
-import {useHistory} from 'react-router-dom';
-import {UserContext} from '../components/Contexts/UserContext';
-import {RoleContext} from '../components/Contexts/RoleContext';
-import {useContext } from 'react';
+import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { UserContext } from '../components/Contexts/UserContext';
+import { RoleContext } from '../components/Contexts/RoleContext';
+import { useContext } from 'react';
 import axios from 'axios';
 import API from '../components/API/API';
 import { Alert, AlertTitle } from '@material-ui/lab';
@@ -56,139 +56,62 @@ const useStyles = makeStyles((theme) => ({
 export default function Register_Store() {
   const classes = useStyles();
 
-  
+
   const history = useHistory();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  
+
 
 
   const { user, setUser } = useContext(UserContext);
 
 
-//Register with firebase
 
+  async function RegisterStore() {
+    //firebase sign up 
+    firebase.auth().createUserWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        // Signed in 
+        var user = userCredential.user;
 
-async function makeSignRequest2(){
-  //firebase sign up 
-  firebase.auth().createUserWithEmailAndPassword(email, password)
-  .then((userCredential) => {
-    // Signed in 
-    var user = userCredential.user;
-    
-    // ...
-  })
-  .catch((error) => {
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    // ..
-  });
-//end of firebase sign up
+        // ...
+      })
+      .catch((error) => {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // ..
+      });
+    //end of firebase sign up
     const Datato_Send = {
-name:name,
-        email: email,
-        password:password
+      name: name,
+      email: email,
+      password: password
 
-      }
-      if(password=='' || email=='' || name==''){
-        alert('insert a valid value');
-        
-
-      }//else if there is an input ->request api login
-      else{
-
-        API.Register_Store(Datato_Send).then(res => {
-            const result = res.data;
-            console.log("RESULT: ", result);
-           if(res.data.success==false){
-            <Alert severity="error">This is an error alert — check it out!</Alert>
-              //  alert(res.data.message);
-           }else{
-               history.push('/');
-           }
-        }).catch(error => console.log("error",error));
-      }
-      
-
-
-
-
-
-
-
-}
-
-
-
-
-
-
-
-
-  async function makeSignRequest() {
-console.log("entssssered makesignrequest");
-    const Datato_Send = {
-
-        email: email,
-        password:password
-
-      }
-     if(password=='' || email==''){
-       alert('insert a valid value');
-    //   history.push('/login');
-     }
-
-    let res = await axios.post('http://localhost:8000/api/login', Datato_Send).catch(error => console.log(error));
-    console.log(res);
-    if(res.data.success==true){
-    if(res.data.token!=null){
-        console.log('loggedin');
-    localStorage.setItem('isloggedin',true);
-    localStorage.setItem('user_id',res.data.user.id);
-    localStorage.setItem('user_name',res.data.user.name);
-    localStorage.setItem('token',res.data.token);
-    localStorage.setItem('role',res.data.user_role.role);
-    console.log('user_id',res.data.sucess);
-    let token = localStorage.getItem('token');
-    axios.defaults.headers.common['Authorization'] =  'Bearer '+token;
-    setUser(localStorage.getItem('isloggedin'));
-    }else{
-        alert("login failed");
-        history.push('/login');
     }
-   if(res.data.user_role.role=="store"){
-    history.push('/');
-   }else  if(res.data.user_role.role=="customer")
-   {
-    // history.push('/tasks');
+    if (password == '' || email == '' || name == '') {
+      alert('insert a valid value');
 
-   }
+
+    }//else if there is an input ->request api login
+    else {
+
+      API.Register_Store(Datato_Send).then(res => {
+        const result = res.data;
+        console.log("RESULT: ", result);
+        if (res.data.success == false) {
+          <Alert severity="error">This is an error alert — check it out!</Alert>
+          //  alert(res.data.message);
+        } else {
+          history.push('/');
+        }
+      }).catch(error => console.log("error", error));
+    }
   }
-  else{
-    //history.push('/login');
-  }
-
-}
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
@@ -201,73 +124,73 @@ console.log("entssssered makesignrequest");
           <Typography component="h1" variant="h5">
             Create Store
           </Typography>
-         
+
           <form className={classes.form} noValidate>
-          <TextField
-          
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          id="name"
-          label="Store Name"
-          name="name"
-          autoComplete="name"
-          autoFocus
-          value={name}
-          onChange={event => setName(event.target.value)}
-        />
-          <TextField
-          
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            value={email}
-            onChange={event => setEmail(event.target.value)}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            value={password}
-            onChange={event => setPassword(event.target.value)}
-          />
-            
+            <TextField
+
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="name"
+              label="Store Name"
+              name="name"
+              autoComplete="name"
+              autoFocus
+              value={name}
+              onChange={event => setName(event.target.value)}
+            />
+            <TextField
+
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+              value={email}
+              onChange={event => setEmail(event.target.value)}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={event => setPassword(event.target.value)}
+            />
+
             <Button
-            fullWidth
-            variant="contained"
-            color="primary"
-            onClick={makeSignRequest2}>
-           Create
+              fullWidth
+              variant="contained"
+              color="primary"
+              onClick={RegisterStore}>
+              Create
           </Button>
 
             <Grid
-  container
-  direction="column"
-  justify="space-evenly"
-  alignItems="flex-start"
-  spacing={2}
->
+              container
+              direction="column"
+              justify="space-evenly"
+              alignItems="flex-start"
+              spacing={2}
+            >
               <Grid item>
-              <Button         
-          component={RouterLink} to={'/'}>
-            Back to Main
+                <Button
+                  component={RouterLink} to={'/'}>
+                  Back to Main
               </Button>
               </Grid>
-              
-              
+
+
 
             </Grid>
           </form>

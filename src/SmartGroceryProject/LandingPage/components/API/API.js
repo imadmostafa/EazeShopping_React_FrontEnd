@@ -47,8 +47,6 @@ export default {
         axios.post(BASE_API_URL+"/register_store", post),
         addPost: (post) =>
         axios.post('{BASE_API_URL}/posts/', post),
-    updatePost: (post, id) =>
-        axios.put(`${BASE_API_URL}/posts/${id}`, post),
     deleteimage: (id) =>
         axios.delete(`${BASE_API_URL}/gallery/${id}`),
     }

@@ -3,9 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
-import {useState,useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import API from '../API/API';
-import {  withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
@@ -34,20 +34,20 @@ const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(2),
     minWidth: 120,
-    marginLeft:'auto'
+    marginLeft: 'auto'
   },
-  cardmode:{
+  cardmode: {
     maxWidth: 600,
-    
-    marginLeft:'100px',
-    alignContent:'center'
-   
-    
+
+    marginLeft: '100px',
+    alignContent: 'center'
+
+
   },
   form: {
-     // Fix IE 11 issue.
+    // Fix IE 11 issue.
     marginTop: theme.spacing(1),
-    
+
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
@@ -95,175 +95,166 @@ export default function AddProject() {
   const [price, setPrice] = useState('');
 
 
-//snack
-const [open, setOpen] = React.useState(false);
+  //snack
+  const [open, setOpen] = React.useState(false);
 
-const handleClick = () => {
-  setOpen(true);
-};
+  const handleClick = () => {
+    setOpen(true);
+  };
 
-const handleClose = (event, reason) => {
-  if (reason === 'clickaway') {
-    return;
-  }
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
 
-  setOpen(false);
-};
+    setOpen(false);
+  };
 
-///
+  ///
 
-
-
-
-
-
-  if(window.performance){//on refresh page , re enter authoraizatoin headers to axios 
-    if(performance.navigation.type==1){
-      let token =localStorage.getItem('token');
-      axios.defaults.headers.common['Authorization']='Bearer '+token;//space after beare important
+  if (window.performance) {//on refresh page , re enter authoraizatoin headers to axios 
+    if (performance.navigation.type == 1) {
+      let token = localStorage.getItem('token');
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;//space after beare important
     }
   }
 
   const [image, setImage] = useState('');
   const [loading, setLoading] = useState(false);
-//
-const mycategoryconstant={
-  id:2,
-  name:'rrr'
-}
-const categoriesconstant=[
-  {
-    id:2,
-    name:'food'
-  },
-  {
-    id:3,
-    name:'food'
+  //
+  const mycategoryconstant = {
+    id: 2,
+    name: 'rrr'
   }
-];
+  const categoriesconstant = [
+    {
+      id: 2,
+      name: 'food'
+    },
+    {
+      id: 3,
+      name: 'food'
+    }
+  ];
   const [category, setCategories] = useState(mycategoryconstant);
-  const [fetchedcategories,setFetchedCategories]=useState(categoriesconstant);
+  const [fetchedcategories, setFetchedCategories] = useState(categoriesconstant);
   const handleChangeCategory = (event) => {
     setCategories(event.target.value);
   };
-//
+  //
 
 
-const[temmpimage,setTempImage]=useState(null);
+  const [temmpimage, setTempImage] = useState(null);
 
 
-//upload project
-const uploadProduct = async e => {
-  const files = e.target.files
-  
-  const data = new FormData()
-  data.append('file', files[0]);
-  data.append('name', email);
-  data.append('description',password);
-  data.append('mass',mass);
-  data.append('price',price);
-  data.append('category_id',category.id);
-  
-  setLoading(true)
+  //upload project
+  const uploadProduct = async e => {
+    const files = e.target.files
 
-  API.addProduct(data).then(res => {
-    const result = res.data;
-    console.log("RESULT: ", result);
-    const path=res.data.path;
-    const fullpath=path;
-  setImage(fullpath);
-  setLoading(false)
-   if(res.data.success==false){
-   alert('failed delete');
-   }else{
- // alert('deleted');
- handleClick();//call snack to appear after successfull operation
-   }
-}).catch(error => console.log("error",error));
+    const data = new FormData()
+    data.append('file', files[0]);
+    data.append('name', email);
+    data.append('description', password);
+    data.append('mass', mass);
+    data.append('price', price);
+    data.append('category_id', category.id);
 
-console.log('tempimage',temmpimage);
-}
-//upload project
+    setLoading(true)
+
+    API.addProduct(data).then(res => {
+      const result = res.data;
+      console.log("RESULT: ", result);
+      const path = res.data.path;
+      const fullpath = path;
+      setImage(fullpath);
+      setLoading(false)
+      if (res.data.success == false) {
+        alert('failed delete');
+      } else {
+        // alert('deleted');
+        handleClick();//call snack to appear after successfull operation
+      }
+    }).catch(error => console.log("error", error));
+
+    console.log('tempimage', temmpimage);
+  }
+  //upload project
 
 
-//
+  //
   const uploadImage = async e => {
     const files = e.target.files
-    
     const data = new FormData()
     data.append('file', files[0])
-   
-    data.append('name', 'ddd')
-    
+    data.append('name', 'name')
     setLoading(true)
 
     API.insertImage(data).then(res => {
       const result = res.data;
       console.log("RESULT: ", result);
-      const path=res.data.file;
-      const fullpath="http://localhost:8000/"+path;
-    setImage(fullpath);
-    setLoading(false)
-     if(res.data.success==false){
-     alert('failed delete');
-     }else{
-    alert('deleted');
-     }
-  }).catch(error => console.log("error",error));
-
-  console.log('tempimage',temmpimage);
+      const path = res.data.file;
+      const fullpath = "http://localhost:8000/" + path;
+      setImage(fullpath);
+      setLoading(false)
+      if (res.data.success == false) {
+        alert('failed insert');
+      } else {
+        alert('inserted');
+      }
+    }).catch(error => console.log("error", error));
   }
-//
+  //
 
-//fetch categories to put in select as array of json objects
-function fetchCategories(){
-  let token = localStorage.getItem('token');
-  axios.defaults.headers.common['Authorization'] =  'Bearer '+token;
-  API.getAllCategories().then(res => {
+  //fetch categories to put in select as array of json objects
+  function fetchCategories() {
+    let token = localStorage.getItem('token');
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+    API.getAllCategories().then(res => {
       const result = res.data.categories;
       console.log("RESULT: ", result);
-      
-     if(res.data.success==false){
 
-     }else{
-      //setCategories(res.data.categories);
-      setFetchedCategories(res.data.categories);
-     }
-  }).catch(error => console.log("error",error));
-}
+      if (res.data.success == false) {
 
-useEffect(() => {
-  fetchCategories();
+      } else {
+        //setCategories(res.data.categories);
+        setFetchedCategories(res.data.categories);
+      }
+    }).catch(error => console.log("error", error));
+  }
 
-}, []);
+  useEffect(() => {
+    fetchCategories();
 
-const getCategoryIndex=(id,fetchedcategories)=>{
-  for(let i=0;i<fetchedcategories.length;i++){
-  if(fetchedcategories[i].id==id){
-  return i;
-  }}
-  return "";
+  }, []);
+
+  const getCategoryIndex = (id, fetchedcategories) => {
+    for (let i = 0; i < fetchedcategories.length; i++) {
+      if (fetchedcategories[i].id == id) {
+        return i;
+      }
+    }
+    return "";
   };
 
   //
   return (
-<div>
-  <Card className={classes.cardmode}>
- 
-<Typography variant="h2" color="initial"
-style={{marginLeft:'20px'}}
->ADD NEW PRODUCT</Typography>
+    <div>
+      <Card className={classes.cardmode}>
 
-<Divider></Divider>
-{loading ? (
-        <div></div>
-      ) : (
-        <img src={image} style={{ width: '200px',height:'200px' }} />
-      )}
+        <Typography variant="h2" color="initial"
+          style={{ marginLeft: '20px' }}
+        >ADD NEW PRODUCT</Typography>
 
-<form className={classes.form} noValidate>
+        <Divider></Divider>
+        {loading ? (
+          <div></div>
+        ) : (
+            <img src={image} style={{ width: '200px', height: '200px' }} />
+          )}
+
+        <form className={classes.form} noValidate>
           <TextField
-            style={{marginRight:'auto',width:'50%'}}
+            style={{ marginRight: 'auto', width: '50%' }}
             variant="outlined"
             margin="normal"
             required
@@ -278,66 +269,66 @@ style={{marginLeft:'20px'}}
 
           />
           <FormControl variant="outlined" className={classes.formControl}>
-        <InputLabel id="demo-simple-select-outlined-label">Category</InputLabel>
-        <Select
-          labelId="demo-simple-select-outlined-label"
-          id="demo-simple-select-outlined"
-          value={fetchedcategories[getCategoryIndex(category.id,fetchedcategories)]}
-          onChange={handleChangeCategory}
-          label="category"
-        >
-          {fetchedcategories.map(categ=>{
-            return(
-             <MenuItem key={categ.id} value={categ}>{categ.name}</MenuItem>
-           )
+            <InputLabel id="demo-simple-select-outlined-label">Category</InputLabel>
+            <Select
+              labelId="demo-simple-select-outlined-label"
+              id="demo-simple-select-outlined"
+              value={fetchedcategories[getCategoryIndex(category.id, fetchedcategories)]}
+              onChange={handleChangeCategory}
+              label="category"
+            >
+              {fetchedcategories.map(categ => {
+                return (
+                  <MenuItem key={categ.id} value={categ}>{categ.name}</MenuItem>
+                )
               })}
-        </Select>
-      </FormControl>
+            </Select>
+          </FormControl>
           <TextField
-          style={{width:'100%'}}
+            style={{ width: '100%' }}
             variant="outlined"
             margin="normal"
             required
             fullWidth
             name="password"
             label="description"
-           
+
             id="password"
             autoComplete="current-password"
             value={password}
             onChange={event => setPassword(event.target.value)}
           />
-          
+
           <TextField
-          style={{width:'50%'}}
+            style={{ width: '50%' }}
             variant="outlined"
             margin="normal"
             required
             fullWidth
             name="password"
             label="price"
-           
+
             id="password"
             autoComplete="current-password"
             value={price}
             onChange={event => setPrice(event.target.value)}
           />
           <TextField
-           style={{width:'50%'}}
+            style={{ width: '50%' }}
             variant="outlined"
             margin="normal"
             required
             fullWidth
             name="password"
             label="mass"
-           
+
             id="password"
             autoComplete="current-password"
             value={mass}
             onChange={event => setMass(event.target.value)}
           />
-            
-            <Button
+
+          <Button
             fullWidth
             variant="contained"
             color="primary"
@@ -345,39 +336,39 @@ style={{marginLeft:'20px'}}
             Add Product
           </Button>
 
-            
-          </form>
+
+        </form>
 
 
 
 
-    <div className={classes.root}>
-      <input
-        accept="file"
-        className={classes.input}
-        id="contained-button-file"
-        multiple
-        type="file"
-        onChange={uploadProduct}
-      />
-      <br></br>
-      <label htmlFor="contained-button-file">
-        <Button variant="contained" color="primary" component="span">
-          Upload  Image And Submit
+        <div className={classes.root}>
+          <input
+            accept="file"
+            className={classes.input}
+            id="contained-button-file"
+            multiple
+            type="file"
+            onChange={uploadProduct}
+          />
+          <br></br>
+          <label htmlFor="contained-button-file">
+            <Button variant="contained" color="primary" component="span">
+              Upload  Image And Submit
         </Button>
-      </label>
-      
-      
-    </div>
+          </label>
+
+
+        </div>
 
 
 
 
 
-    </Card>
-    <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+      </Card>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success">
-        New Product Added successfully!
+          New Product Added successfully!
         </Alert>
       </Snackbar>
     </div>
@@ -392,7 +383,7 @@ style={{marginLeft:'20px'}}
   );
 
 
-// 
+  // 
 
 
 

@@ -66,10 +66,7 @@ return (
             <Route exact path="/">
             <LandingMain/>
                 </Route>
-                
-           
             
-             
                 <Route exact path="/register_customer">
                 <Register_Customer/>
                 </Route>
@@ -84,8 +81,6 @@ return (
                 <Route exact path="/logout">
                     <Logout></Logout>
                 </Route>
-
-           
 
             </RouterSwitch>
 

@@ -1,5 +1,5 @@
 
-import {React,useContext } from 'react';
+import { React, useContext } from 'react';
 import axios from 'axios';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -11,11 +11,11 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import  {useState} from 'react';
-import {useHistory} from 'react-router-dom';
+import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import {UserContext} from '../components/Contexts/UserContext';
-import {RoleContext} from '../components/Contexts/RoleContext';
+import { UserContext } from '../components/Contexts/UserContext';
+import { RoleContext } from '../components/Contexts/RoleContext';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', 
+    width: '100%',
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -44,7 +44,7 @@ export default function SignIn() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  
+
 
 
   const { user, setUser } = useContext(UserContext);
@@ -55,67 +55,66 @@ export default function SignIn() {
 
 
   async function makeSignRequest() {
-console.log("entssssered makesignrequest");
+    console.log("entssssered makesignrequest");
     const Datato_Send = {
 
-        email: email,
-        password:password
+      email: email,
+      password: password
 
-      }
-     if(password=='' || email==''){
-       alert('insert a valid value');
-    //   history.push('/login');
-     }
+    }
+    if (password == '' || email == '') {
+      alert('insert a valid value');
+      //   history.push('/login');
+    }
 
     let res = await axios.post('http://localhost:8000/api/login', Datato_Send).catch(error => console.log(error));
-//to be changed to include setting items and contexts inside the response promise before .catch error 
-//that way if there is an error no way another would be thrown because res.data was not found ;
-//then else alert('login failed')try again
-/*e.g
-export function getAllPeople() {
-  return axios
-    .get("/api/getAllPeople")
-    .then(response => {
-      return response.data;
-    })
-    .catch(error => {
-      return error;
-    });
-}*/
+    //to be changed to include setting items and contexts inside the response promise before .catch error 
+    //that way if there is an error no way another would be thrown because res.data was not found ;
+    //then else alert('login failed')try again
+    /*e.g
+    export function getAllPeople() {
+      return axios
+        .get("/api/getAllPeople")
+        .then(response => {
+          return response.data;
+        })
+        .catch(error => {
+          return error;
+        });
+    }*/
     console.log(res);
-  
-    if(res.data.success==true){
 
-    
-    if(res.data.token!=null){
+    if (res.data.success == true) {
+
+
+      if (res.data.token != null) {
         console.log('loggedin');
-    localStorage.setItem('isloggedin',true);
-    localStorage.setItem('user_id',res.data.user.id);
-    localStorage.setItem('user_name',res.data.user.name);
-    localStorage.setItem('token',res.data.token);
-    localStorage.setItem('role',res.data.user_role.role);
-    console.log('user_id',res.data.sucess);
-    let token = localStorage.getItem('token');
-    axios.defaults.headers.common['Authorization'] =  'Bearer '+token;
-    setUser(localStorage.getItem('isloggedin'));
-  
-    }else{
+        localStorage.setItem('isloggedin', true);
+        localStorage.setItem('user_id', res.data.user.id);
+        localStorage.setItem('user_name', res.data.user.name);
+        localStorage.setItem('token', res.data.token);
+        localStorage.setItem('role', res.data.user_role.role);
+        console.log('user_id', res.data.sucess);
+        let token = localStorage.getItem('token');
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+        setUser(localStorage.getItem('isloggedin'));
+
+      } else {
         alert("login failed");
         history.push('/login');
+      }
+      if (res.user_role.role == "store") {
+        // history.push('/homepage_admin');
+      } else if (res.data.user_role.role == "customer") {
+        // history.push('/tasks');
+
+      }
     }
-   if(res.user_role.role=="store"){
-   // history.push('/homepage_admin');
-   }else  if(res.data.user_role.role=="customer")
-   {
-    // history.push('/tasks');
+    else {
+      //history.push('/login');
+    }
 
-   }
   }
-  else{
-    //history.push('/login');
-  }
-
-}
 
 
 
@@ -143,76 +142,76 @@ export function getAllPeople() {
 
 
   return (
-      <Paper>
+    <Paper>
 
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign in
         </Typography>
-        <form className={classes.form} noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            value={email}
-            onChange={event => setEmail(event.target.value)}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            value={password}
-            onChange={event => setPassword(event.target.value)}
-          />
+          <form className={classes.form} noValidate>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+              value={email}
+              onChange={event => setEmail(event.target.value)}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={event => setPassword(event.target.value)}
+            />
 
-          <Button
+            <Button
 
-            fullWidth
-            variant="contained"
-            color="primary"
+              fullWidth
+              variant="contained"
+              color="primary"
 
-            onClick={makeSignRequest}
-          >
-            Sign In
+              onClick={makeSignRequest}
+            >
+              Sign In
           </Button>
           Sign Up for Your Own Organization !<br></br><br></br>
-          
 
-          <Button
-          
-          variant="contained"
-          component={Link} to={'/register_store'}>
-             Register
+
+            <Button
+
+              variant="contained"
+              component={Link} to={'/register_store'}>
+              Register
               </Button>
-          <Grid container>
+            <Grid container>
 
 
-<Grid item>
+              <Grid item>
 
-</Grid>
+              </Grid>
 
-          </Grid>
-        </form>
-      </div>
+            </Grid>
+          </form>
+        </div>
 
-    </Container>
+      </Container>
     </Paper>
   );
 }

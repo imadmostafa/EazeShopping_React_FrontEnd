@@ -1,7 +1,5 @@
-//re updateuseffect state based on firebase input notifications change ;
 import IconButton from '@material-ui/core/IconButton';
 import React from 'react';
-import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -11,7 +9,6 @@ import TableRow from '@material-ui/core/TableRow';
 import Title from './Title';
 import API from '../API/API';
 import { useState, useEffect } from 'react';
-import Button from '@material-ui/core/Button';
 import CheckIcon from '@material-ui/icons/Check';
 import firebase from '../Firebase_Notifications/FirebaseNotifcations';
 import { Avatar } from '@material-ui/core';
@@ -23,22 +20,8 @@ function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-
-
 function createData(id, date, name, shipTo, paymentMethod, amount) {
   return { id, date, name, shipTo, paymentMethod, amount };
-}
-
-const rows = [
-  createData(0, '16 Mar, 2019', 'Elvis Presley', 'Tupelo, MS', 'VISA ⠀•••• 3719', 312.44),
-  createData(1, '16 Mar, 2019', 'Paul McCartney', 'London, UK', 'VISA ⠀•••• 2574', 866.99),
-  createData(2, '16 Mar, 2019', 'Tom Scholz', 'Boston, MA', 'MC ⠀•••• 1253', 100.81),
-  createData(3, '16 Mar, 2019', 'Michael Jackson', 'Gary, IN', 'AMEX ⠀•••• 2000', 654.39),
-  createData(4, '15 Mar, 2019', 'Bruce Springsteen', 'Long Branch, NJ', 'VISA ⠀•••• 5919', 212.79),
-];
-
-function preventDefault(event) {
-  event.preventDefault();
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -50,14 +33,13 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-
-
 export default function ListBills_Cashier(props) {
   const classes = useStyles();
   const [bills_undone, setBillsUnDone] = useState([]);
-  const [searchbar, setSearchBar] = useState(props.searchvalue);//for searching the customers
+  const [searchbar, setSearchBar] = useState(props.searchvalue);//for searching the customers, get from appbar parent
 
-  //snack bar queue mode 
+
+  //snack bar 
   const [open, setOpen] = React.useState(false);
 
   const handleClick = () => {
@@ -70,9 +52,7 @@ export default function ListBills_Cashier(props) {
     }
 
     setOpen(false);
-  };
-
-  //end of snack bar queue mode functions
+  };//end of snack bar queue mode functions
 
 
 
@@ -82,7 +62,7 @@ export default function ListBills_Cashier(props) {
       console.log("RESULT: ", result);
 
       if (res.data.success == false) {
-        alert('failed delete');
+        alert('failed fetching');
       } else {
 
         setBillsUnDone(res.data.bills);
@@ -108,7 +88,7 @@ export default function ListBills_Cashier(props) {
       let ultrasonicvalue = [];//.orderByChild('ultra1')
 
       fetchBills_UnDone();
-      ////alert(resp.val().ultra1);//cooollllllll
+
       let ultrasonic_from_firebase = resp.val().cashier;
       if (ultrasonic_from_firebase == "true") {//fetch data by name
         //alert('new bill inserted cool');

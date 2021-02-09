@@ -6,18 +6,18 @@ import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
-import {Link as RouterLink} from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import  {useState} from 'react';
-import {useHistory} from 'react-router-dom';
-import {UserContext} from '../components/Contexts/UserContext';
-import {RoleContext} from '../components/Contexts/RoleContext';
-import {useContext,useEffect } from 'react';
+import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { UserContext } from '../components/Contexts/UserContext';
+import { RoleContext } from '../components/Contexts/RoleContext';
+import { useContext, useEffect } from 'react';
 import axios from 'axios';
 import API from '../components/API/API';
 import { Alert, AlertTitle } from '@material-ui/lab';
@@ -61,122 +61,99 @@ const useStyles = makeStyles((theme) => ({
 export default function Register_Customer() {
   const classes = useStyles();
 
-  
+
   const history = useHistory();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  
+
 
 
   const { user, setUser } = useContext(UserContext);
-//category
-const mycategoryconstant={
-  id:2,
-  name:'rrr'
-}
-const categoriesconstant=[
-  {
-    id:2,
-    name:'Alomda'
-  },
-  {
-    id:3,
-    name:'Spinnesy'
+
+  //stores available,registered in system
+  const initialstore = {//initial dummy data before fetching finishes at didmount
+    id: 2,
+    name: 'rrr'
   }
-];
-  const [category, setCategories] = useState(mycategoryconstant);
-  const [fetchedcategories,setFetchedCategories]=useState(categoriesconstant);
-  const handleChangeCategory = (event) => {
-    setCategories(event.target.value);
+  const storesinitial = [//initial dummy data before fetching finishes at didmount
+    {
+      id: 2,
+      name: 'Alomda'
+    },
+    {
+      id: 3,
+      name: 'Spinnesy'
+    }
+  ];
+
+  const [store, setStore] = useState(initialstore);
+  const [fetchedstores, setFetchedStores] = useState(storesinitial);
+
+  const handleChangeStore = (event) => {
+    setStore(event.target.value);
   };
 
 
-  function fetchCategories(){
+  function fetchStores() {
     let token = localStorage.getItem('token');
-    axios.defaults.headers.common['Authorization'] =  'Bearer '+token;
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
     API.getStores().then(res => {
-        const result = res.data.stores;
-        console.log("RESULT: ", result);
-        
-       if(res.data.success==false){
-      
-  
-  
-       }else{
-      
-        //setCategories(res.data.categories);
-        setFetchedCategories(res.data.stores);
-       }
-    }).catch(error => console.log("error",error));
+      const result = res.data.stores;
+      console.log("RESULT: ", result);
+
+      if (res.data.success == false) {
+
+      } else {
+        setFetchedStores(res.data.stores);
+      }
+    }).catch(error => console.log("error", error));
   }
-  
+
   useEffect(() => {
-    fetchCategories();
-  
+    fetchStores();
+
   }, []);
-  const getCategoryIndex=(id,fetchedcategories)=>{
-    for(let i=0;i<fetchedcategories.length;i++){
-    if(fetchedcategories[i].id==id){
-    return i;
-    }}
+  const getStoreIndex = (id, fetchedstores) => {
+    for (let i = 0; i < fetchedstores.length; i++) {
+      if (fetchedstores[i].id == id) {
+        return i;
+      }
+    }
     return "";
-    };
-//
+  };
+  //
 
 
 
 
-async function makeSignRequest2(){
-  const category_id_tosend=category.id;
-  console.log(category_id_tosend);
+  async function RegisterCustomer() {
+    const store_id_tosend = store.id;
+    // console.log(store_id_tosend);
     const Datato_Send = {
-name:name,
-        email: email,
-        password:password,
-        store_id:1
+      name: name,
+      email: email,
+      password: password,
+      store_id: store.id
 
-      }
-      if(password=='' || email==''||name==''){
-        alert('insert a valid value');
-        
-
-      }//else if there is an input ->request api login
-      else{
-
-        API.Register_Customer(Datato_Send).then(res => {
-            const result = res.data;
-            console.log("RESULT: ", result);
-           if(res.data.success==false){
-            <Alert severity="error">This is an error alert — check it out!</Alert>
-              //  alert(res.data.message);
-           }else{
-               history.push('/');
-           }
-        }).catch(error => console.log("error",error));
-      }
-}//end of signup request method
+    }
+    if (password == '' || email == '' || name == '') {
+      alert('insert a valid value');
+    }//else if there is an input ->request api login
+    else {
+      API.Register_Customer(Datato_Send).then(res => {
+        const result = res.data;
+        console.log("RESULT: ", result);
+        if (res.data.success == false) {
+          //  alert(res.data.message);
+        } else {
+          history.push('/');
+        }
+      }).catch(error => console.log("error", error));
+    }
+  }//end of signup request method
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
@@ -189,89 +166,86 @@ name:name,
           <Typography component="h1" variant="h5">
             Sign Up
           </Typography>
-         
+
           <form className={classes.form} noValidate>
-          <TextField
-          
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          id="name"
-          label="Your Name"
-          name="name"
-          autoComplete="name"
-          autoFocus
-          value={name}
-          onChange={event => setName(event.target.value)}
-        />
-          <TextField
-          
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            value={email}
-            onChange={event => setEmail(event.target.value)}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            value={password}
-            onChange={event => setPassword(event.target.value)}
-          />
+            <TextField
+
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="name"
+              label="Your Name"
+              name="name"
+              autoComplete="name"
+              autoFocus
+              value={name}
+              onChange={event => setName(event.target.value)}
+            />
+            <TextField
+
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+              value={email}
+              onChange={event => setEmail(event.target.value)}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={event => setPassword(event.target.value)}
+            />
             <FormControl variant="outlined" className={classes.formControl}>
-        <InputLabel id="demo-simple-select-outlined-label">Available Stores</InputLabel>
-        <Select
-          labelId="demo-simple-select-outlined-label"
-          id="demo-simple-select-outlined"
-          value={fetchedcategories[getCategoryIndex(category.id,fetchedcategories)]}
-          onChange={handleChangeCategory}
-          label="category"
-        >
-          {fetchedcategories.map(categ=>{
-            return(
-             <MenuItem key={categ.id} value={categ}>{categ.name}</MenuItem>
-           )
-              })}
-        </Select>
-      </FormControl>
+              <InputLabel id="demo-simple-select-outlined-label">Available Stores</InputLabel>
+              <Select
+                labelId="demo-simple-select-outlined-label"
+                id="demo-simple-select-outlined"
+                value={fetchedstores[getStoreIndex(store.id, fetchedstores)]}
+                onChange={handleChangeStore}
+                label="stores"
+              >
+                {fetchedstores.map(categ => {
+                  return (
+                    <MenuItem key={categ.id} value={categ}>{categ.name}</MenuItem>
+                  )
+                })}
+              </Select>
+            </FormControl>
             <Button
-            fullWidth
-            variant="contained"
-            color="primary"
-            onClick={makeSignRequest2}>
-            Register
+              fullWidth
+              variant="contained"
+              color="primary"
+              onClick={RegisterCustomer}>
+              Register
           </Button>
 
             <Grid
-  container
-  direction="column"
-  justify="space-evenly"
-  alignItems="flex-start"
-  spacing={2}
->
+              container
+              direction="column"
+              justify="space-evenly"
+              alignItems="flex-start"
+              spacing={2}
+            >
               <Grid item>
-              <Button         
-          component={RouterLink} to={'/'}>
-             Back
+                <Button
+                  component={RouterLink} to={'/'}>
+                  Back
               </Button>
               </Grid>
-              
-              
-
             </Grid>
           </form>
         </div>

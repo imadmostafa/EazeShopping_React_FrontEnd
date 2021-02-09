@@ -14,17 +14,13 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 import LockIcon from '@material-ui/icons/Lock';
 import ListAltIcon from '@material-ui/icons/ListAlt';
-import {useHistory} from 'react-router-dom';
-import ScheduleIcon from '@material-ui/icons/Schedule';
-import {ThemeContext} from '../Contexts/ThemeContext';
+import { useHistory } from 'react-router-dom';
+import { ThemeContext } from '../Contexts/ThemeContext';
 import GroupIcon from '@material-ui/icons/Group';
-import {useContext} from 'react'; 
-import Switch from "@material-ui/core/Switch" ;
-import {Paper,Typography} from '@material-ui/core';
+import { useContext } from 'react';
+import {  Typography } from '@material-ui/core';
 import { useState } from 'react';
 import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
 import VideocamTwoToneIcon from '@material-ui/icons/VideocamTwoTone';
@@ -36,18 +32,15 @@ import Brightness4Icon from '@material-ui/icons/Brightness4';
 import Brightness7Icon from '@material-ui/icons/Brightness7';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 import Badge from '@material-ui/core/Badge';//forchat icon
-import AddCircleIcon from '@material-ui/icons/AddCircle';
 import {
   BrowserRouter as Router,
   Switch as RouterSwitch,
-  Link,
   Route
-}from 'react-router-dom';
+} from 'react-router-dom';
 import RoomList from './Chatting_Store/RoomList';
 import AddRoom from './Chatting_Store/AddRoom';
 import ChatRoom from './Chatting_Store/ChatRoom';
 import ChatRoomTrial from './Chatting_Store/ChatRoomTrial';
-import EditProduct from './EditProduct';
 import EditProduct_Form from './EditProduct_Form';
 const drawerWidth = 240;
 
@@ -116,18 +109,18 @@ const useStyles = makeStyles((theme) => ({
 export default function NavBar_Store() {
   const classes = useStyles();
   const theme = useTheme();
-  const history=useHistory();
+  const history = useHistory();
   const { darkState, setDarkState } = useContext(ThemeContext);
-const[statedarkState,setStateDarkState]=useState(false);
-//for change of dark mode switch
-  const handleThemeChange=()=>{
-      setStateDarkState(!statedarkState);
+  const [statedarkState, setStateDarkState] = useState(false);
+  //for change of dark mode switch
+  const handleThemeChange = () => {
+    setStateDarkState(!statedarkState);
     setDarkState(statedarkState);
-    };
+  };
 
   const [open, setOpen] = React.useState(false);
 
-var store_owner=localStorage.getItem('user_name');
+  var store_owner = localStorage.getItem('user_name');
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -135,175 +128,175 @@ var store_owner=localStorage.getItem('user_name');
   const handleDrawerClose = () => {
     setOpen(false);
   };
-//<Paper> </Paper>
+  //<Paper> </Paper>
   return (
-      <div>
-     
-    <div className={classes.root}>
-      <CssBaseline />
-      <AppBar
-        position="fixed"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: open,
-        })}
-      >
-        <Toolbar>
-          <IconButton
-            
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            className={clsx(classes.menuButton, {
-              [classes.hide]: open,
-            })}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap style={{flex:1}}>
-            
-          </Typography>
-          
-          <IconButton onClick={handleThemeChange}>
-{darkState? <Brightness7Icon/>:<Brightness4Icon/>}
-          </IconButton>
-          <Typography variant="h6" noWrap >
+    <div>
+
+      <div className={classes.root}>
+        <CssBaseline />
+        <AppBar
+          position="fixed"
+          className={clsx(classes.appBar, {
+            [classes.appBarShift]: open,
+          })}
+        >
+          <Toolbar>
+            <IconButton
+
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              className={clsx(classes.menuButton, {
+                [classes.hide]: open,
+              })}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" noWrap style={{ flex: 1 }}>
+
+            </Typography>
+
+            <IconButton onClick={handleThemeChange}>
+              {darkState ? <Brightness7Icon /> : <Brightness4Icon />}
+            </IconButton>
+            <Typography variant="h6" noWrap >
               {store_owner}
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        variant="permanent"
-        className={clsx(classes.drawer, {
-          [classes.drawerOpen]: open,
-          [classes.drawerClose]: !open,
-        })}
-        classes={{
-          paper: clsx({
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Drawer
+          variant="permanent"
+          className={clsx(classes.drawer, {
             [classes.drawerOpen]: open,
             [classes.drawerClose]: !open,
-          }),
-        }}
-      >
-        <div className={classes.toolbar}>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-          </IconButton>
-        </div>
-        <Divider />
-        <List>
-        <ListItem button onClick={() => history.push('/homepage_store')}>
-          <ListItemIcon>
-        <ListAltIcon/>
-      </ListItemIcon>
-    <ListItemText primary="Products"/>
-</ListItem>
+          })}
+          classes={{
+            paper: clsx({
+              [classes.drawerOpen]: open,
+              [classes.drawerClose]: !open,
+            }),
+          }}
+        >
+          <div className={classes.toolbar}>
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+            </IconButton>
+          </div>
+          <Divider />
+          <List>
+            <ListItem button onClick={() => history.push('/homepage_store')}>
+              <ListItemIcon>
+                <ListAltIcon />
+              </ListItemIcon>
+              <ListItemText primary="Products" />
+            </ListItem>
 
-<ListItem button onClick={() => history.push('/addproject')}>
-          <ListItemIcon>
-          <CreateNewFolderIcon/>
-      </ListItemIcon>
-    <ListItemText primary="Add Product"/>
-</ListItem>
+            <ListItem button onClick={() => history.push('/addproject')}>
+              <ListItemIcon>
+                <CreateNewFolderIcon />
+              </ListItemIcon>
+              <ListItemText primary="Add Product" />
+            </ListItem>
 
-<ListItem button onClick={() => history.push('/allmembers')}>
-          <ListItemIcon>
-        <GroupIcon/>
-      </ListItemIcon>
-    <ListItemText primary="AllMembers"/>
-</ListItem>
+            <ListItem button onClick={() => history.push('/allmembers')}>
+              <ListItemIcon>
+                <GroupIcon />
+              </ListItemIcon>
+              <ListItemText primary="AllMembers" />
+            </ListItem>
 
-<ListItem button onClick={() => history.push('/roomlist')}>
-          <ListItemIcon>
-          <Badge badgeContent={4} color="secondary">
-          <WhatsAppIcon/>
-      </Badge>
-      </ListItemIcon>
-    <ListItemText primary="Connect"/>
-</ListItem>
-<Divider />
-<ListItem button onClick={() => history.push('/machinelearning')}>
-          <ListItemIcon>
-          <VideocamTwoToneIcon/>
-      </ListItemIcon>
-    <ListItemText primary="Machine Learning"/>
-</ListItem>
-
-
-
-<ListItem button onClick={() => history.push('/logout')}>
-          <ListItemIcon>
-          <LockIcon/>
-      </ListItemIcon>
-    <ListItemText primary="Logout"/>
-</ListItem>
-
-        </List>
-      </Drawer>
-      <main className={classes.content}>
-      
-      <div className={classes.toolbar} />
-        
+            <ListItem button onClick={() => history.push('/roomlist')}>
+              <ListItemIcon>
+                <Badge badgeContent={4} color="secondary">
+                  <WhatsAppIcon />
+                </Badge>
+              </ListItemIcon>
+              <ListItemText primary="Connect" />
+            </ListItem>
+            <Divider />
+            <ListItem button onClick={() => history.push('/machinelearning')}>
+              <ListItemIcon>
+                <VideocamTwoToneIcon />
+              </ListItemIcon>
+              <ListItemText primary="Machine Learning" />
+            </ListItem>
 
 
 
+            <ListItem button onClick={() => history.push('/logout')}>
+              <ListItemIcon>
+                <LockIcon />
+              </ListItemIcon>
+              <ListItemText primary="Logout" />
+            </ListItem>
 
-<RouterSwitch>
+          </List>
+        </Drawer>
+        <main className={classes.content}>
 
-
-      <Route exact path="/addproject">
-
-<AddProject/>
-    </Route>
-    <Route exact path="/allmembers">
-   
-<ShowAllMembers/>
-    </Route>
-
-
-    <Route exact path="/homepage_store">
-<ListProducts_Store></ListProducts_Store>
-    </Route>
-
-    <Route exact path="/editproduct_form">
-<EditProduct_Form></EditProduct_Form>
-    </Route>
-
-    <Route exact path="/chatroomtrial">
-<ChatRoomTrial></ChatRoomTrial>
-    </Route>
-
-    <Route exact path="/roomlist">
-<RoomList></RoomList>
-    </Route>
-
-    <Route exact path="/addroom">
-<AddRoom></AddRoom>
-    </Route>
-
-    <Route exact path="/chatroom/:room">
-<ChatRoom></ChatRoom>
-    </Route>
-
-    <Route exact path="/machinelearning">
-<Webcamtrial1></Webcamtrial1>
-    </Route>
-
-
-
-    </RouterSwitch>
+          <div className={classes.toolbar} />
 
 
 
 
 
+          <RouterSwitch>
+
+
+            <Route exact path="/addproject">
+
+              <AddProject />
+            </Route>
+            <Route exact path="/allmembers">
+
+              <ShowAllMembers />
+            </Route>
+
+
+            <Route exact path="/homepage_store">
+              <ListProducts_Store></ListProducts_Store>
+            </Route>
+
+            <Route exact path="/editproduct_form">
+              <EditProduct_Form></EditProduct_Form>
+            </Route>
+
+            <Route exact path="/chatroomtrial">
+              <ChatRoomTrial></ChatRoomTrial>
+            </Route>
+
+            <Route exact path="/roomlist">
+              <RoomList></RoomList>
+            </Route>
+
+            <Route exact path="/addroom">
+              <AddRoom></AddRoom>
+            </Route>
+
+            <Route exact path="/chatroom/:room">
+              <ChatRoom></ChatRoom>
+            </Route>
+
+            <Route exact path="/machinelearning">
+              <Webcamtrial1></Webcamtrial1>
+            </Route>
+
+
+
+          </RouterSwitch>
 
 
 
 
 
-      </main>
-    </div>
-   
+
+
+
+
+
+        </main>
+      </div>
+
     </div>
   );
 }
